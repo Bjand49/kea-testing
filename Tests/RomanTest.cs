@@ -32,7 +32,7 @@ namespace Tests
         [InlineData("", "No characters written")]
         [InlineData("DCMII", "Invalid character positioning")]
         [InlineData("VIIII", "Invalid syntax")]
-        public void Parse_Roman_Nummerals_To_Numbers_Are_Incorrect(string romanNumber,string errorExpectedMessage)
+        public void Parse_Roman_Nummerals_To_Numbers_Are_Incorrect(string romanNumber, string errorExpectedMessage)
         {
             var errorMessage = "";
             try
@@ -41,12 +41,12 @@ namespace Tests
                 var roman = new RomanNumeralParser();
 
                 //Act
-                var value = roman.ParseNumeral(romanNumber);
+                roman.ParseNumeral(romanNumber);
             }
             catch (Exception e)
             {
                 //Assert
-                errorMessage = e.Message; 
+                errorMessage = e.Message;
                 return;
             }
             Assert.Equal(errorExpectedMessage, errorMessage);
@@ -84,7 +84,7 @@ namespace Tests
                 var roman = new RomanNumeralParser();
 
                 //Act
-                var value = roman.ParseNumbers(number);
+                roman.ParseNumbers(number);
             }
             catch (Exception e)
             {
