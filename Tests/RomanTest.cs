@@ -1,10 +1,4 @@
 ﻿using Main;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit.Sdk;
 
 namespace Tests
 {
@@ -28,30 +22,20 @@ namespace Tests
             //Assert
             Assert.Equal(value, expectedResult);
         }
+
         [Theory]
         [InlineData("", "No characters written")]
         [InlineData("DCMII", "Invalid character positioning")]
         [InlineData("VIIII", "Invalid syntax")]
         public void Parse_Roman_Nummerals_To_Numbers_Are_Incorrect(string romanNumber, string errorExpectedMessage)
         {
-            var errorMessage = "";
-            try
-            {
-                //Assign
-                var roman = new RomanNumeralParser();
+            //Assign
+            var roman = new RomanNumeralParser();
 
-                //Act
-                roman.ParseNumeral(romanNumber);
-            }
-            catch (Exception e)
-            {
-                //Assert
-                errorMessage = e.Message;
-                return;
-            }
-            Assert.Equal(errorExpectedMessage, errorMessage);
+            //Act & assert
+            var exception = Assert.Throws<ArgumentException>(() => roman.ParseNumeral(romanNumber));
+            Assert.Equal(exception.Message, errorExpectedMessage);
         }
-
 
         [Theory]
         [InlineData(7, "VII")]
@@ -71,28 +55,19 @@ namespace Tests
             //Assert
             Assert.Equal(value, expectedResult);
         }
+
         [Theory]
         [InlineData(0, "The number has to be at least 1 or at max 3999")]
         [InlineData(50000, "The number has to be at least 1 or at max 3999")]
         [InlineData(-200, "The number has to be at least 1 or at max 3999")]
         public void Parse_Numbers_To_Roman_Numerals_Are_Incorrect(int number, string expectedResult)
         {
-            var errorMessage = "";
-            try
-            {
-                //Assign
-                var roman = new RomanNumeralParser();
+            //Assign
+            var roman = new RomanNumeralParser();
 
-                //Act
-                roman.ParseNumbers(number);
-            }
-            catch (Exception e)
-            {
-                //Assert
-                errorMessage = e.Message;
-                return;
-            }
-            Assert.Equal(expectedResult, errorMessage);
+            //Act & assert
+            var exception = Assert.Throws<ArgumentException>(() => roman.ParseNumbers(number));
+            Assert.Equal(exception.Message, expectedResult);
         }
     }
 }

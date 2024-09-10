@@ -4,10 +4,18 @@ namespace Tests
 {
     public class CalculatorTest
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="val1"></param>
+        /// <param name="val2"></param>
+        /// <param name="result"></param>
         [Theory]
-        [InlineData(1, 2, 3)]
+        [InlineData(int.MaxValue, 0, int.MaxValue)]
+        [InlineData(-int.MaxValue, 0, -int.MaxValue)]
         [InlineData(0, 0, 0)]
-        [InlineData(4, 4, 8)]
+        [InlineData(1, 1, 2)]
         [InlineData(-2, -2, -4)]
         public void Numbers_Are_Summed_Correctly(int val1, int val2, int result)
         {
@@ -24,6 +32,8 @@ namespace Tests
         [Theory]
         [InlineData(1, 2, -1)]
         [InlineData(0, 0, 0)]
+        [InlineData(int.MaxValue, 0, int.MaxValue)]
+        [InlineData(-int.MaxValue, 0, -int.MaxValue)]
         [InlineData(4, 4, 0)]
         [InlineData(-2, -2, 0)]
         [InlineData(999, 1, 998)]
@@ -43,6 +53,8 @@ namespace Tests
         [Theory]
         [InlineData(1, 2, 2)]
         [InlineData(0, 0, 0)]
+        [InlineData(int.MaxValue, 2, -2)]
+        [InlineData(-int.MaxValue, 2, 2)]
         [InlineData(4, 4, 16)]
         [InlineData(-2, -2, 4)]
         public void Numbers_Are_Multiplied_Correctly(int val1, int val2, int result)
@@ -76,24 +88,12 @@ namespace Tests
         [Fact]
         public void Divide_By_Zero_Throws_Exception()
         {
-            try
-            {
-                //Assign
-                var calc = new Calculator();
+            //Assign
+            var calc = new Calculator();
 
-                //Act
-                var value = calc.Divide(0, 0);
+            //Act and Assert
+            Assert.Throws<DivideByZeroException>(()=>calc.Divide(0, 0));
 
-                //Assert
-                Assert.Equal(value, 0);
-            }
-            catch (Exception e)
-            {
-                Assert.Equal(typeof(DivideByZeroException), e.GetType());
-                return;
-            }
-            Assert.Equal(true, false);
-            
         }
 
 
