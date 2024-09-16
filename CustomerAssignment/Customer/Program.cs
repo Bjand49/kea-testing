@@ -7,8 +7,8 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         var app = builder.Build();
 
-        //var urmom = new Employee();
-        //app.MapGet("/", () => urmom.GetDiscount());
+        var urmom = new Employee();
+        app.MapGet("/", () => urmom.GetDiscount());
         app.Run();
     }
 }

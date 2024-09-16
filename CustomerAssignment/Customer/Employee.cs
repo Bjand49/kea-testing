@@ -1,6 +1,7 @@
 ﻿using Main;
 using System.Text;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Main
 {
@@ -15,14 +16,13 @@ namespace Main
         private DateTime _dateOfBirth;
         private DateTime _dateOfEmployment;
         private string _country;
-
         public Employee() { }
         public string Cpr
         {
             get { return _cpr; }
             set
             {
-                if(value.Length != 10)
+                if (value.Length != 10)
                 {
                     throw new Exception("CPR number is not 10 long");
                 }
@@ -33,43 +33,116 @@ namespace Main
         public string FirstName
         {
             get { return _firstName; }
-            set { _firstName = value; }
+            set
+            {
+                if (value.Length == 0)
+                {
+                    throw new Exception("Firstname is empty");
+                }
+                else if (value.Length > 30)
+                {
+                    throw new Exception("Firstname is too long");
+                }
+                if (!_isValidName(value))
+                {
+                    throw new Exception("Firstname cannot containt other characters");
+                }
+                _firstName = value;
+            }
         }
 
         public string LastName
         {
             get { return _lastName; }
-            set { _lastName = value; }
+            set
+            {
+                if (value.Length == 0)
+                {
+                    throw new Exception("Lastname is empty");
+                }
+                else if (value.Length > 30)
+                {
+                    throw new Exception("Lastname is too long");
+                }
+                if (!_isValidName(value))
+                {
+                    throw new Exception("Firstname cannot containt other characters");
+                }
+
+                _lastName = value;
+            }
         }
 
-        public Department Department
+        public string Department
         {
-            get { return _department; }
-            set { _department = value; }
+            get { return _department.ToString(); }
+            set
+            {
+                var validDepartment = Enum.TryParse(value, out this._department);
+                if (!validDepartment)
+                {
+                    throw new Exception("Invalid department");
+                }
+            }
         }
 
         public decimal BaseSalary
         {
             get { return _baseSalary; }
-            set { _baseSalary = value; }
+            set
+            {
+                if (value < 20000)
+                {
+                    throw new Exception("Salary is too low");
+                }
+                if (value > 100000)
+                {
+                    throw new Exception("Salary is too high");
+                }
+                _baseSalary = value;
+            }
         }
 
-        public EducationLevel EducationLevel
+        public string EducationLevel
         {
-            get { return _educationLevel; }
-            set { _educationLevel = value; }
+            get { return _educationLevel.ToString(); }
+            set
+            {
+                var validEducationLevel = Enum.TryParse(value, out this._educationLevel);
+                if (!validEducationLevel)
+                {
+                    throw new Exception("Invalid educationlevel");
+                }
+            }
         }
 
         public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }
-            set { _dateOfBirth = value; }
+            set
+            {
+
+                var minimumDate = DateTime.Now.AddYears(-18);
+                if (minimumDate < value)
+                {
+                    throw new Exception("Not old enough to acccess");
+                }
+                _dateOfBirth = value;
+            }
         }
 
         public DateTime DateOfEmployment
         {
             get { return _dateOfEmployment; }
-            set { _dateOfEmployment = value; }
+            set
+            {
+                if (DateTime.Now > value)
+                {
+                    throw new Exception("You cannot be employed in the future");
+                }
+
+                _dateOfEmployment = value;
+            }
         }
 
         public string Country
@@ -78,96 +151,6 @@ namespace Main
             set { _country = value; }
         }
 
-        public Employee(
-            string cpr,
-            string firstName,
-            string lastName,
-            string department,
-            decimal baseSalary,
-            string educationLevel,
-            DateTime dateOfBirth,
-            DateTime dateOfEmployment,
-            string country)
-        {
-            var errorSB = new StringBuilder();
-            //Validate cpr
-            _cpr = cpr;
-            if (_cpr.Length != 10)
-            {
-                errorSB.Append("CPR must be excatly 10 characters long");
-            }
-
-            //Firstname validation
-            _firstName = firstName;
-            if (_firstName.Length > 0)
-            {
-                errorSB.Append("Firstname is empty");
-            }
-            else if (_firstName.Length < 30)
-            {
-                errorSB.Append("Firstname is too long");
-            }
-            if (!_isValidName(_firstName))
-            {
-                errorSB.Append("Firstname cannot containt other characters");
-            }
-
-            //Lastname validation
-            _lastName = lastName;
-            if (_lastName.Length > 0)
-            {
-                errorSB.Append("Lastname is empty");
-            }
-            else if (_lastName.Length < 30)
-            {
-                errorSB.Append("Lastname is too long");
-            }
-            if (!_isValidName(_lastName))
-            {
-                errorSB.Append("Firstname cannot containt other characters");
-            }
-
-            //department validation
-            var validDepartment = Enum.TryParse(department, out this._department);
-            if (!validDepartment)
-            {
-                errorSB.Append("Invalid department");
-            }
-
-            //Salary validation
-            _baseSalary = baseSalary;
-            if (_baseSalary < 20000)
-            {
-                errorSB.Append("Salary is too low");
-            }
-            if (_baseSalary > 100000)
-            {
-                errorSB.Append("Salary is too high");
-            }
-
-            //Educationlevel validation
-            var validEducationLevel = Enum.TryParse(educationLevel, out this._educationLevel);
-            if (!validEducationLevel)
-            {
-                errorSB.Append("Invalid educationlevel");
-            }
-
-            //dob validation
-            _dateOfBirth = dateOfBirth;
-            if (DateTime.Now.AddYears(-18) > _dateOfBirth)
-            {
-                errorSB.Append("Not old enough to acccess");
-            }
-
-            //employmentdate validation
-            _dateOfEmployment = dateOfEmployment;
-            if (DateTime.Now > _dateOfEmployment)
-            {
-                errorSB.Append("You cannot be employed in the future");
-            }
-
-            _country = country;
-        }
 
         public decimal GetSalary()
         {
@@ -204,7 +187,7 @@ namespace Main
 
         private bool _isValidName(string name)
         {
-            string pattern = @"^[a-zA-Z0-9\- ]+$";
+            string pattern = @"^[\p{L}\- ]+$";
 
             bool isMatch = Regex.IsMatch(name, pattern);
             return isMatch;
