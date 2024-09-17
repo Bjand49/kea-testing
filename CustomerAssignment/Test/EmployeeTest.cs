@@ -1,6 +1,5 @@
 using Main;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace Test
 {
@@ -9,7 +8,7 @@ namespace Test
         #region validation
         #region positive tests
         [Fact]
-        public void CPR_Returns_no_error_when_length_is_10()
+        public void CPR_Returns_No_Error_When_Length_Is_Ten()
         {
             //Arrange
             var sut = new Employee();
@@ -20,6 +19,7 @@ namespace Test
             //Assert
             Assert.True(sut.Cpr.Length == 10);
         }
+
         [Theory]
         [InlineData("Bjørn")]
         [InlineData("Bo")]
@@ -110,9 +110,9 @@ namespace Test
         }
 
         [Theory]
-        [InlineData(0,0,1)]
-        [InlineData(0,0,2)]
-        [InlineData(150,0,0)]
+        [InlineData(0, 0, 1)]
+        [InlineData(0, 0, 2)]
+        [InlineData(150, 0, 0)]
         public void Valid_Date_Of_Employment_Are_Set_Correctly(int year, int month, int day)
         {
             //Arrange
@@ -127,7 +127,7 @@ namespace Test
             sut.DateOfEmployment = date;
 
             //Assert
-            Assert.True(sut.DateOfEmployment== date);
+            Assert.True(sut.DateOfEmployment == date);
         }
 
         #endregion
@@ -136,8 +136,7 @@ namespace Test
         [Theory]
         [InlineData("12345678901")]  //11
         [InlineData("123456789012")] //12
-        [InlineData("1234567890123")]//13
-        public void CPR_Returns_error_when_length_is_more_than_10(string cpr)
+        public void CPR_Returns_Error_When_Length_Is_More_Than_Ten(string cpr)
         {
             //Arrange
             var sut = new Employee();
@@ -145,6 +144,22 @@ namespace Test
             //Act & Assert
             Assert.Throws<Exception>(() => sut.Cpr = cpr);
         }
+        
+        [Theory]
+        [InlineData("")]   //0
+        [InlineData("1")]   //1
+        [InlineData("12")]   //2
+        [InlineData("12345678")]   //8
+        [InlineData("123456789")]  //9
+        public void CPR_Returns_Error_When_Length_Is_Less_Than_Ten(string cpr)
+        {
+            //Arrange
+            var sut = new Employee();
+
+            //Act & Assert
+            Assert.Throws<Exception>(() => sut.Cpr = cpr);
+        }
+
 
         [Theory]
         [InlineData("Floccinaucinihilipilificationer")]
@@ -324,13 +339,30 @@ namespace Test
         {
             //Arrange
             var sut = new Employee();
-
-            //Act
             sut.EducationLevel = education.ToString();
             sut.BaseSalary = baseSalary;
 
-            //Assert
+            //Act & Assert
             Assert.True(sut.GetSalary() == expectedValue);
+
+        }
+
+        [Theory]
+        [InlineData("Denmark", 0)]
+        [InlineData("Sweden", 0)]
+        [InlineData("Norway", 0)]
+        [InlineData("Iceland", 0.5)]
+        [InlineData("Finland", 0.5)]
+        [InlineData("Germany", 1)]
+        [InlineData("", 1)]
+        public void Get_Shipping_Returns_Correct_Amount_From_County(string country, decimal expectedValue)
+        {
+            //Arrange
+            var sut = new Employee();
+            sut.Country = country;
+
+            //Act & Assert
+            Assert.True(sut.GetShippingCosts() == expectedValue);
 
         }
         #endregion
