@@ -5,7 +5,7 @@ namespace Test
 {
     public class EmployeeTest
     {
-        private Employee sut;
+        private readonly Employee sut;
         public EmployeeTest()
         {
             this.sut = new Employee();
