@@ -185,7 +185,7 @@ namespace Main
             }
         }
 
-        private bool _isValidName(string name)
+        private static bool _isValidName(string name)
         {
             string pattern = @"^[\p{L}\- ]+$";
 

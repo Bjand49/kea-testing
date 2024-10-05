@@ -5,14 +5,16 @@ namespace Test
 {
     public class EmployeeTest
     {
+        private readonly Employee sut;
+        public EmployeeTest()
+        {
+            this.sut = new Employee();
+        }
         #region validation
         #region positive tests
         [Fact]
         public void CPR_Returns_No_Error_When_Length_Is_Ten()
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act
             sut.Cpr = "1234567890";
 
@@ -26,9 +28,6 @@ namespace Test
         [InlineData("Floccinaucinihilipilification")]
         public void FirstName_Sets_Valid_name(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act
             sut.FirstName = name;
 
@@ -41,9 +40,6 @@ namespace Test
         [InlineData("Floccinaucinihilipilification")]
         public void LastName_Sets_Valid_name(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act
             sut.LastName = name;
 
@@ -59,9 +55,6 @@ namespace Test
         [InlineData("GeneralServices")]
         public void Valid_Departments_Are_Set_Correctly(string departmentName)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act
             sut.Department = departmentName;
 
@@ -77,9 +70,6 @@ namespace Test
         [InlineData(100000)]
         public void Valid_Salaries_Are_Set_Correctly(decimal number)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act
             sut.BaseSalary = number;
 
@@ -98,8 +88,6 @@ namespace Test
             date = date.AddYears(year);
             date = date.AddMonths(month);
             date = date.AddDays(day);
-
-            var sut = new Employee();
 
             //Act
             sut.DateOfBirth = date;
@@ -121,8 +109,6 @@ namespace Test
             date = date.AddMonths(month);
             date = date.AddDays(day);
 
-            var sut = new Employee();
-
             //Act
             sut.DateOfEmployment = date;
 
@@ -138,13 +124,10 @@ namespace Test
         [InlineData("123456789012")] //12
         public void CPR_Returns_Error_When_Length_Is_More_Than_Ten(string cpr)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.Cpr = cpr);
         }
-        
+
         [Theory]
         [InlineData("")]   //0
         [InlineData("1")]   //1
@@ -153,9 +136,6 @@ namespace Test
         [InlineData("123456789")]  //9
         public void CPR_Returns_Error_When_Length_Is_Less_Than_Ten(string cpr)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.Cpr = cpr);
         }
@@ -167,9 +147,6 @@ namespace Test
         [InlineData("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et tincidunt risus. Sed ut semper lorem. Cras volutpat odio in arcu hendrerit aliquam. Nullam a efficitur est. Proin eu ex eget tellus dapibus dapibus. Suspendisse potenti. Aliquam erat volutpat. Duis congue tortor quis libero condimentum, vitae eleifend sem vehicula. Nulla iaculis dui cursus, rutrum dolor a, placerat justo. Ut iaculis dui et mollis faucibus. Suspendisse potenti. Cras sed quam felis.\r\n\r\n")]
         public void Firstname_Too_Long_Throws_Exception(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.FirstName = name);
         }
@@ -180,9 +157,6 @@ namespace Test
         [InlineData("Ban_ana")]
         public void FirstName_with_invalid_characters_throws_error(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.FirstName = name);
         }
@@ -190,9 +164,6 @@ namespace Test
         [Fact]
         public void FirstName_empty_throws_error()
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.FirstName = "");
         }
@@ -204,9 +175,6 @@ namespace Test
         [InlineData("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer et tincidunt risus. Sed ut semper lorem. Cras volutpat odio in arcu hendrerit aliquam. Nullam a efficitur est. Proin eu ex eget tellus dapibus dapibus. Suspendisse potenti. Aliquam erat volutpat. Duis congue tortor quis libero condimentum, vitae eleifend sem vehicula. Nulla iaculis dui cursus, rutrum dolor a, placerat justo. Ut iaculis dui et mollis faucibus. Suspendisse potenti. Cras sed quam felis.\r\n\r\n")]
         public void LastName_too_long_throws_error(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.LastName = name);
         }
@@ -216,18 +184,12 @@ namespace Test
         [InlineData("Ban_ana")]
         public void LastName_with_invalid_characters_throws_error(string name)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.LastName = name);
         }
         [Fact]
         public void LastName_empty_throws_error()
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.LastName = "");
         }
@@ -238,9 +200,6 @@ namespace Test
         [InlineData("sales")]
         public void Invalid_Departments_Throws_Exceptions(string departmentName)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.Department = departmentName);
         }
@@ -254,9 +213,6 @@ namespace Test
         [InlineData(-20001)]
         public void Salaries_Too_Low_Throws_Exception(decimal number)
         {
-            //Arrange
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.BaseSalary = number);
         }
@@ -267,9 +223,6 @@ namespace Test
         [InlineData(10000002)]
         public void Salaries_Too_High_Throws_Exception(decimal number)
         {
-            //Arrange   
-            var sut = new Employee();
-
             //Act & Assert
             Assert.Throws<Exception>(() => sut.BaseSalary = number);
         }
@@ -285,7 +238,6 @@ namespace Test
             date = date.AddYears(year);
             date = date.AddMonths(month);
             date = date.AddDays(day);
-            var sut = new Employee();
 
             //Act & Assert
             Assert.Throws<Exception>(() => sut.DateOfBirth = date);
@@ -302,8 +254,6 @@ namespace Test
             date = date.AddYears(year);
             date = date.AddMonths(month);
             date = date.AddDays(day);
-
-            var sut = new Employee();
 
             //Act & Assert
             Assert.Throws<Exception>(() => sut.DateOfEmployment = date);
@@ -338,7 +288,6 @@ namespace Test
         public void Education_Level_Affects_Salary(EducationLevel education, decimal baseSalary, decimal expectedValue)
         {
             //Arrange
-            var sut = new Employee();
             sut.EducationLevel = education.ToString();
             sut.BaseSalary = baseSalary;
 
@@ -358,12 +307,10 @@ namespace Test
         public void Get_Shipping_Returns_Correct_Amount_From_County(string country, decimal expectedValue)
         {
             //Arrange
-            var sut = new Employee();
             sut.Country = country;
 
             //Act & Assert
             Assert.True(sut.GetShippingCosts() == expectedValue);
-
         }
         #endregion
     }
