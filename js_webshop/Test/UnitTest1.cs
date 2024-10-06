@@ -94,7 +94,7 @@ namespace Test
             //checkout cart
             driver.FindElement(By.CssSelector("#optCart a")).Click();
             Assert.Equal("The cart is empty. Please add some products to the cart.", driver.FindElement(By.CssSelector("#alert p")).Text);
-
+            driver.Quit();
 
         }
     }
